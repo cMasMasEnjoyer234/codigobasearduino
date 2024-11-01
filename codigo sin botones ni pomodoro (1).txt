@@ -1,0 +1,44 @@
+// C++ code
+//
+#include "Wire.h"
+#include "Adafruit_GFX.h"
+#include "Adafruit_LEDBackpack.h"
+
+
+
+Adafruit_7segment display = Adafruit_7segment();
+
+int minutes = 0;
+int seconds = 0;
+unsigned long lastUpdate = 0;
+
+void setup() {
+  display.begin(0x70);  // Dirección I2C estándar para el display
+  display.setBrightness(10);  // Ajusta el brillo (0-15)
+}
+
+void printTime() {
+  int timeToDisplay = (minutes * 100) + seconds;  // Formato MM:SS
+  display.print(timeToDisplay);
+  display.drawColon(true);  // Activa los dos puntos para mostrar formato MM:SS
+  display.writeDisplay();
+}
+
+void loop() {
+  // Actualización cada segundo
+  if (millis() - lastUpdate >= 1000) {  // cada segundo
+    lastUpdate = millis();
+    seconds++;
+    
+    if (seconds == 60) {
+      seconds = 0;
+      minutes++;
+      
+      if (minutes == 60) {
+        minutes = 0;  // Reinicia a 00:00 después de 59:59
+      }
+    }
+  }
+  
+  printTime();  // Actualizar el display con el tiempo actual (MM:SS)
+}
