@@ -89,5 +89,6 @@ Este proyecto implementa un reloj portátil con un temporizador Pomodoro basado 
 ## Licencia
 Este proyecto se distribuye bajo la licencia MIT. Siéntete libre de usar y modificar el código para tus necesidades.
 
+![Mi imagen](ProductoFinal.png "Producto Final...")
 
 
