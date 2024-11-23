@@ -29,6 +29,8 @@ Este proyecto implementa un reloj portátil con un temporizador Pomodoro basado 
 - Buzzer (para alarmas sonoras)
 - Botones para cambiar entre modos y configurar el temporizador
 - Conexión Wi-Fi para comunicación MQTT
+- 4 resistores
+- 14 cables
 
 ## Conexiones de Hardware
 
