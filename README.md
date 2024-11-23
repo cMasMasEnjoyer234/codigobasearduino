@@ -1,19 +1,91 @@
-**FUNCIONAMIENTO GENERAL
+# Reloj Portátil con Temporizador Pomodoro
 
-Consiste de 3 modos: Modo clock, Modo PomodoroConfig, Modo Pomodoro (existiria un 4 pero es solo cuando se prende por primera vez para configurar la hora).
-MODO CLOCK: 
-El modo clock consiste en un algoritmo el cual cuenta el tiempo de los minutos , con la condicion del tiempo que el esp estuvo prendido contra el actual, contando cada 60.000mili segundos (esto seria un minuto), este segun donde este, sea el modo que sea, siempre se mantendra contando sin importar el modo.
+Este proyecto implementa un reloj portátil con un temporizador Pomodoro basado en NodeMCU ESP8266, utilizando una pantalla TM1637 de 4 dígitos, un potenciómetro para configuraciones y conectividad Wi-Fi con MQTT. 
 
-MODO POMODORO_CONFIG
-Este modo consiste en la configuracion de el pomodoro, tiene 3 fases:
-	-fase 1: ¿Cuantos ciclos se repetiran? 
-    Puedes con el potenciometro o con el cellular decider del 1 al 8, cuantas veces se repetira             
-    el ciclo.
-  -fase 2: ¿Cuantos minutos descansaras?
- 		Aca con los mismos inputs puedes decider desde 1 a 15 minutos de Descanso.
-	-fase 3: ¿Cuantos minutos vas a trabajar?
-    Por ultimo, esta fase determina cuantos minutos vas a trabajar por ciclo con un intervalo entre  10 a 59 minutos.
-    (si no estas satisfecho o colocaste un valor por error, no te preocupes, el boton que sirve para configurar este modo esta diseñado para empesar el pomodoro solo si estas en la fase 3 y mantienes el boton derecho unos segundos, por lo que puedes navegar entre fases libremente).
+## Características Principales
 
-MODO POMODORO:
-Una vez de que este satisfecho con la configuracion del pomodoro, mantienes apretado el boton derecho y automaticamente se activara este modo, en cuanto estes en el Descanso, sonara una alarma indicandote que descanses. Si no quieres usarlo y po pusiste por error o solo quieres Volver al clock, presionas el boton izquierdo y automaticamente te llevara a la hora, las configs no se guardan por lo que tendras que Volver a configurar el pomodoro.
+1. **Modo Reloj**: 
+   - Visualiza la hora actual en la pantalla TM1637.
+   - Configuración manual de la hora mediante un potenciómetro.
+
+2. **Modo Pomodoro**:
+   - Temporizador configurable para períodos de trabajo y descanso.
+   - Alterna automáticamente entre sesiones de trabajo y descanso.
+   - Alarma sonora al final de cada período.
+
+3. **Conectividad Wi-Fi y MQTT**:
+   - Permite configuraciones remotas del temporizador a través de tópicos MQTT.
+   - Sincronización y control en tiempo real mediante mensajes MQTT.
+
+4. **Controles Físicos**:
+   - Botones para alternar entre modos y ajustar configuraciones.
+   - Potenciómetro para definir tiempo de trabajo, descanso y ciclos Pomodoro.
+
+## Componentes Utilizados
+
+- NodeMCU ESP8266
+- Pantalla TM1637 de 4 dígitos
+- Potenciómetro conectado al pin A0
+- Buzzer (para alarmas sonoras)
+- Botones para cambiar entre modos y configurar el temporizador
+- Conexión Wi-Fi para comunicación MQTT
+
+## Conexiones de Hardware
+
+| Componente          | Pin NodeMCU ESP8266 |
+|---------------------|---------------------|
+| Pantalla CLK        | D2                 |
+| Pantalla DIO        | D3                 |
+| Potenciómetro       | A0                 |
+| Botón de estado     | D0                 |
+| Botón de modos      | D5                 |
+| Buzzer              | D7                 |
+
+## Configuración de Software
+
+### Bibliotecas Necesarias
+
+1. **[TM1637Display](https://github.com/avishorp/TM1637)**
+   - Para controlar la pantalla TM1637.
+2. **[PubSubClient](https://github.com/knolleary/pubsubclient)**
+   - Para manejar la comunicación MQTT.
+3. **ESP8266WiFi**:
+   - Integrada en el framework de ESP8266 para conexión Wi-Fi.
+
+### Configuración Wi-Fi
+
+# Funcionalidades Clave
+
+## Configuración del Reloj
+- Usa el potenciómetro para ajustar la hora y los minutos.
+- Presiona el botón de estado (`CHANGESTATE_BTN`) para alternar entre configuración de horas y minutos.
+
+## Configuración del Temporizador Pomodoro
+- Usa el potenciómetro para ajustar:
+  - Número de ciclos (1-10).
+  - Tiempo de descanso (1-15 minutos).
+  - Tiempo de trabajo (10-59 minutos).
+- El botón de estado (`CHANGESTATE_BTN`) confirma las configuraciones.
+
+## Temporizador en Ejecución
+- Alterna automáticamente entre períodos de trabajo y descanso.
+- Emite una alarma al final de cada período.
+- Configuración pausada si se recibe una orden MQTT o se presiona el botón de modos.
+
+## Ejecución del Código
+1. Conecta los componentes según la tabla de conexiones.
+2. Sube el código al NodeMCU ESP8266 utilizando Arduino IDE.
+3. Observa el funcionamiento en la pantalla TM1637 y controla mediante los botones o mensajes MQTT.
+
+## Notas Adicionales
+- El sistema utiliza un filtro exponencial para suavizar las lecturas del potenciómetro y evitar fluctuaciones en la configuración.
+- Si el Wi-Fi no está disponible, el temporizador funciona de manera autónoma.
+
+## Futuras Mejoras
+- Implementación de una interfaz web para configuración y control.
+
+## Licencia
+Este proyecto se distribuye bajo la licencia MIT. Siéntete libre de usar y modificar el código para tus necesidades.
+
+
+
